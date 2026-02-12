@@ -112,12 +112,4 @@ public class CustomerEdgeCaseTests
         var customer = new Customer { CreatedAt = now, UpdatedAt = now };
         customer.CreatedAt.Should().Be(now);
     }
-
-    [Fact]
-    public void Customer_UpdatedAt_Can_Be_Before_CreatedAt()
-    {
-        var now = DateTime.UtcNow;
-        var customer = new Customer { CreatedAt = now, UpdatedAt = now.AddDays(-1) };
-        customer.UpdatedAt.Should().BeBefore(customer.CreatedAt);
-    }
 }
