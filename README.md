@@ -318,6 +318,19 @@ The system uses SQL Server by default. Connection strings can be configured in `
 - Secure password handling
 - Audit trails for all operations
 
+## Project Documentation
+
+Comprehensive project documentation is available in the [`/docs`](./docs/) folder:
+
+- 📋 **[Product Requirements Document (PRD)](./docs/PRD_Product_Requirements_Document.md)** - Product features and requirements
+- 💼 **[Business Requirements Document (BRD)](./docs/BRD_Business_Requirements_Document.md)** - Business case and ROI analysis
+- 🏗️ **[System Specifications](./docs/SYSTEM_SPECIFICATIONS.md)** - Technical architecture and design
+- 💡 **[Concept Note](./docs/CONCEPT_NOTE.md)** - Project overview and justification
+- 📊 **[Project Proposal](./docs/PROJECT_PROPOSAL.md)** - Formal project proposal with budget
+- 🗺️ **[Implementation Plan](./docs/IMPLEMENTATION_PLAN.md)** - Detailed execution roadmap
+
+See the [Documentation README](./docs/README.md) for more details.
+
 ## Integration with Wekeza Core Banking
 
 This CRM system is designed to integrate seamlessly with the [Wekeza Core Banking System](https://github.com/eodenyire/Wekeza). Key integration points:
