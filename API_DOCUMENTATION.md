@@ -303,6 +303,254 @@ Delete an interaction.
 
 ---
 
+## Phase 2: AI & Automation APIs
+
+### Next Best Actions
+
+#### GET /api/nextbestactions
+Get all next best actions.
+
+**Response:**
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "customerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "actionType": "ProductRecommendation",
+    "title": "Recommend Premium Savings Account",
+    "description": "Customer profile indicates readiness for premium account upgrade",
+    "confidenceScore": 0.85,
+    "recommendedProduct": "Premium Savings Account",
+    "recommendedDate": "2026-02-12T10:00:00Z",
+    "isCompleted": false
+  }
+]
+```
+
+#### POST /api/nextbestactions/generate/{customerId}
+Generate AI-powered recommendations for a customer.
+
+**Parameters:**
+- `customerId` (path, required): Customer GUID
+
+**Response:** Array of generated next best action recommendations
+
+#### PUT /api/nextbestactions/{id}/complete
+Mark a next best action as completed.
+
+**Request Body:**
+```json
+{
+  "outcome": "Customer accepted premium account upgrade"
+}
+```
+
+**Response:** Updated action object
+
+---
+
+### Sentiment Analysis
+
+#### POST /api/sentimentanalysis/analyze
+Analyze sentiment of text (interaction or case notes).
+
+**Request Body:**
+```json
+{
+  "customerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "text": "I am very happy with the service provided",
+  "interactionId": "optional-interaction-id",
+  "caseId": "optional-case-id"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "customerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "sentimentType": "Positive",
+  "sentimentScore": 0.8,
+  "textAnalyzed": "I am very happy with the service provided",
+  "analyzedDate": "2026-02-12T10:00:00Z",
+  "keyPhrases": "happy, service, provided"
+}
+```
+
+#### GET /api/sentimentanalysis/customer/{customerId}
+Get sentiment analysis history for a customer.
+
+**Parameters:**
+- `customerId` (path, required): Customer GUID
+
+**Response:** Array of sentiment analysis objects
+
+---
+
+### Workflows
+
+#### GET /api/workflows/definitions
+Get all workflow definitions.
+
+**Response:** Array of workflow definition objects
+
+#### POST /api/workflows/definitions
+Create a new workflow definition.
+
+**Request Body:**
+```json
+{
+  "name": "Case Escalation Workflow",
+  "description": "Automatically escalate cases after 48 hours",
+  "triggerType": "CaseAgeExceeded",
+  "triggerConditions": "{\"hours\": 48}",
+  "actions": "[{\"type\": \"Escalate\"}, {\"type\": \"Notify\"}]",
+  "isActive": true,
+  "executionOrder": 1
+}
+```
+
+**Response:** Created workflow definition
+
+#### POST /api/workflows/instances/trigger
+Trigger a workflow instance.
+
+**Request Body:**
+```json
+{
+  "workflowDefinitionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "customerId": "optional-customer-id",
+  "caseId": "optional-case-id",
+  "context": "optional-context-json"
+}
+```
+
+**Response:** Created workflow instance
+
+---
+
+### Notifications
+
+#### GET /api/notifications/user/{userId}/unread
+Get unread notifications for a user.
+
+**Parameters:**
+- `userId` (path, required): User GUID
+
+**Response:**
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "type": "Alert",
+    "title": "High Priority Case Assigned",
+    "message": "You have been assigned a high priority case",
+    "isRead": false,
+    "actionUrl": "/cases/123",
+    "createdAt": "2026-02-12T10:00:00Z"
+  }
+]
+```
+
+#### POST /api/notifications
+Create a notification.
+
+**Request Body:**
+```json
+{
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "type": "Info",
+  "title": "New Customer Inquiry",
+  "message": "A customer has submitted a new inquiry",
+  "actionUrl": "/inquiries/456"
+}
+```
+
+**Response:** Created notification object
+
+#### PUT /api/notifications/{id}/read
+Mark a notification as read.
+
+**Parameters:**
+- `id` (path, required): Notification GUID
+
+**Response:** 204 No Content
+
+---
+
+### Analytics
+
+#### GET /api/analytics/dashboard
+Get comprehensive analytics dashboard.
+
+**Query Parameters:**
+- `startDate` (optional): Start date for analytics period
+- `endDate` (optional): End date for analytics period
+
+**Response:**
+```json
+{
+  "customerAnalytics": {
+    "totalCustomers": 1250,
+    "activeCustomers": 1100,
+    "newCustomersThisMonth": 45,
+    "customersBySegment": {
+      "Retail": 850,
+      "SME": 250,
+      "Corporate": 100,
+      "HighNetWorth": 50
+    },
+    "customersByKYCStatus": {
+      "Verified": 1000,
+      "Pending": 150,
+      "InProgress": 100
+    }
+  },
+  "caseAnalytics": {
+    "totalCases": 320,
+    "openCases": 45,
+    "resolvedCases": 265,
+    "averageResolutionTimeHours": 18.5,
+    "casesByPriority": {
+      "Low": 120,
+      "Medium": 150,
+      "High": 40,
+      "Critical": 10
+    }
+  },
+  "interactionAnalytics": {
+    "totalInteractions": 5420,
+    "interactionsThisMonth": 450,
+    "interactionsByChannel": {
+      "Branch": 2100,
+      "CallCenter": 1800,
+      "Email": 950,
+      "WhatsApp": 570
+    },
+    "averageInteractionDurationMinutes": 12.3
+  },
+  "generatedAt": "2026-02-12T10:00:00Z"
+}
+```
+
+#### GET /api/analytics/customers
+Get customer-specific analytics.
+
+**Response:** Customer analytics object
+
+#### GET /api/analytics/cases
+Get case-specific analytics.
+
+**Response:** Case analytics object
+
+#### GET /api/analytics/interactions
+Get interaction-specific analytics.
+
+**Response:** Interaction analytics object
+
+---
+
 ## Enumerations
 
 ### Customer Segments
@@ -341,6 +589,38 @@ Delete an interaction.
 - `MobileApp` - Mobile banking app
 - `Web` - Web portal
 - `ATM` - ATM transaction
+
+### Action Types (Phase 2)
+- `ProductRecommendation` - Recommend a new product
+- `FollowUpCall` - Schedule follow-up call
+- `SendEmail` - Send email communication
+- `SendSMS` - Send SMS message
+- `ScheduleMeeting` - Schedule meeting with customer
+- `UpgradeAccount` - Suggest account upgrade
+- `CrossSell` - Cross-sell opportunity
+- `RetentionOffer` - Retention offer for at-risk customer
+- `RiskReview` - Review customer risk profile
+
+### Sentiment Types (Phase 2)
+- `Positive` - Positive customer sentiment
+- `Neutral` - Neutral sentiment
+- `Negative` - Negative sentiment
+- `VeryNegative` - Very negative sentiment requiring attention
+
+### Notification Types (Phase 2)
+- `Info` - Informational notification
+- `Warning` - Warning notification
+- `Alert` - Alert requiring attention
+- `Success` - Success notification
+- `Error` - Error notification
+
+### Workflow Status (Phase 2)
+- `Draft` - Workflow in draft state
+- `Active` - Active and running
+- `Paused` - Temporarily paused
+- `Completed` - Successfully completed
+- `Failed` - Failed with errors
+- `Cancelled` - Manually cancelled
 
 ---
 

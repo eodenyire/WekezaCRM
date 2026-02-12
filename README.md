@@ -34,6 +34,13 @@ Wekeza CRM is a modern, bank-grade Customer Relationship Management system built
 - ✅ Customer targeting by segment
 - ✅ Campaign performance tracking
 
+### Phase 2: AI & Automation Features ✨
+- ✅ **AI-Powered Next Best Actions** - Smart recommendations for customer engagement
+- ✅ **Customer Sentiment Analysis** - Analyze sentiment from interactions and cases
+- ✅ **Workflow Automation Engine** - Define and execute automated workflows
+- ✅ **Real-Time Notifications** - User notifications with read/unread tracking
+- ✅ **Advanced Analytics Dashboards** - Comprehensive analytics for customers, cases, and interactions
+
 ### Integration Ready
 - ✅ RESTful API with OpenAPI/Swagger documentation
 - ✅ JWT-based authentication
@@ -153,6 +160,59 @@ https://localhost:5001/swagger
 | PUT | `/api/cases/{id}/status` | Update case status |
 | DELETE | `/api/cases/{id}` | Delete case |
 
+### Next Best Actions (Phase 2)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/nextbestactions` | Get all next best actions |
+| GET | `/api/nextbestactions/{id}` | Get action by ID |
+| GET | `/api/nextbestactions/customer/{customerId}` | Get actions for customer |
+| GET | `/api/nextbestactions/customer/{customerId}/pending` | Get pending actions |
+| POST | `/api/nextbestactions/generate/{customerId}` | Generate AI recommendations |
+| PUT | `/api/nextbestactions/{id}/complete` | Complete an action |
+| DELETE | `/api/nextbestactions/{id}` | Delete action |
+
+### Sentiment Analysis (Phase 2)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/sentimentanalysis` | Get all sentiment analyses |
+| GET | `/api/sentimentanalysis/{id}` | Get analysis by ID |
+| GET | `/api/sentimentanalysis/customer/{customerId}` | Get sentiment for customer |
+| POST | `/api/sentimentanalysis/analyze` | Analyze sentiment of text |
+
+### Workflows (Phase 2)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/workflows/definitions` | Get all workflow definitions |
+| GET | `/api/workflows/definitions/active` | Get active workflows |
+| POST | `/api/workflows/definitions` | Create workflow definition |
+| PUT | `/api/workflows/definitions/{id}` | Update workflow definition |
+| GET | `/api/workflows/instances` | Get all workflow instances |
+| POST | `/api/workflows/instances/trigger` | Trigger a workflow |
+| PUT | `/api/workflows/instances/{id}/status` | Update instance status |
+
+### Notifications (Phase 2)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/notifications` | Get all notifications |
+| GET | `/api/notifications/user/{userId}` | Get user notifications |
+| GET | `/api/notifications/user/{userId}/unread` | Get unread notifications |
+| POST | `/api/notifications` | Create notification |
+| PUT | `/api/notifications/{id}/read` | Mark as read |
+| DELETE | `/api/notifications/{id}` | Delete notification |
+
+### Analytics (Phase 2)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/analytics/customers` | Get customer analytics |
+| GET | `/api/analytics/cases` | Get case analytics |
+| GET | `/api/analytics/interactions` | Get interaction analytics |
+| GET | `/api/analytics/dashboard` | Get comprehensive dashboard |
+
 ## Domain Models
 
 ### Customer Segments
@@ -233,12 +293,12 @@ For more details, see [Document.md](Document.md) for the complete design benchma
 
 ## Future Roadmap
 
-### Phase 2 Enhancements
-- [ ] AI-powered next best action recommendations
-- [ ] Customer sentiment analysis
-- [ ] Automated workflow engine
-- [ ] Real-time notifications
-- [ ] Advanced analytics dashboards
+### Phase 2 Enhancements ✅ COMPLETED
+- [x] AI-powered next best action recommendations
+- [x] Customer sentiment analysis
+- [x] Automated workflow engine
+- [x] Real-time notifications
+- [x] Advanced analytics dashboards
 
 ### Phase 3 Features
 - [ ] Mobile CRM app (Flutter/React Native)
