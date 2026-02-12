@@ -63,6 +63,11 @@ builder.Services.AddScoped<IWorkflowRepository, WorkflowRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 
+// Phase 3 repositories
+builder.Services.AddScoped<IWhatsAppRepository, WhatsAppRepository>();
+builder.Services.AddScoped<IUSSDRepository, USSDRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+
 // CORS
 builder.Services.AddCors(options =>
 {
