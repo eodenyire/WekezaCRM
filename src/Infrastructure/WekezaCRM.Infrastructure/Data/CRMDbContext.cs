@@ -16,6 +16,21 @@ public class CRMDbContext : DbContext
     public DbSet<CaseNote> CaseNotes { get; set; }
     public DbSet<Interaction> Interactions { get; set; }
     public DbSet<Campaign> Campaigns { get; set; }
+    
+    // Phase 2 entities
+    public DbSet<NextBestAction> NextBestActions { get; set; }
+    public DbSet<SentimentAnalysis> SentimentAnalyses { get; set; }
+    public DbSet<WorkflowDefinition> WorkflowDefinitions { get; set; }
+    public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<AnalyticsReport> AnalyticsReports { get; set; }
+    
+    // Phase 3 entities
+    public DbSet<WhatsAppMessage> WhatsAppMessages { get; set; }
+    public DbSet<USSDSession> USSDSessions { get; set; }
+    public DbSet<ReportTemplate> ReportTemplates { get; set; }
+    public DbSet<ReportSchedule> ReportSchedules { get; set; }
+    public DbSet<GeneratedReport> GeneratedReports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -101,6 +116,142 @@ public class CRMDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+        });
+
+        // NextBestAction configuration
+        modelBuilder.Entity<NextBestAction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.ConfidenceScore).HasPrecision(5, 2);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // SentimentAnalysis configuration
+        modelBuilder.Entity<SentimentAnalysis>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SentimentScore).HasPrecision(5, 2);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Interaction)
+                  .WithMany()
+                  .HasForeignKey(e => e.InteractionId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(e => e.Case)
+                  .WithMany()
+                  .HasForeignKey(e => e.CaseId)
+                  .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        // WorkflowDefinition configuration
+        modelBuilder.Entity<WorkflowDefinition>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.TriggerType).IsRequired().HasMaxLength(100);
+        });
+
+        // WorkflowInstance configuration
+        modelBuilder.Entity<WorkflowInstance>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.WorkflowDefinition)
+                  .WithMany(w => w.WorkflowInstances)
+                  .HasForeignKey(e => e.WorkflowDefinitionId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(e => e.Case)
+                  .WithMany()
+                  .HasForeignKey(e => e.CaseId)
+                  .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        // Notification configuration
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // AnalyticsReport configuration
+        modelBuilder.Entity<AnalyticsReport>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.ReportName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.ReportType).IsRequired().HasMaxLength(100);
+        });
+
+        // WhatsAppMessage configuration
+        modelBuilder.Entity<WhatsAppMessage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
+            entity.HasIndex(e => e.WhatsAppMessageId);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // USSDSession configuration
+        modelBuilder.Entity<USSDSession>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SessionId).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.SessionId).IsUnique();
+            entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
+            entity.HasOne(e => e.Customer)
+                  .WithMany()
+                  .HasForeignKey(e => e.CustomerId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // ReportTemplate configuration
+        modelBuilder.Entity<ReportTemplate>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.ReportType).IsRequired().HasMaxLength(100);
+        });
+
+        // ReportSchedule configuration
+        modelBuilder.Entity<ReportSchedule>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            entity.HasOne(e => e.ReportTemplate)
+                  .WithMany(t => t.ReportSchedules)
+                  .HasForeignKey(e => e.ReportTemplateId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // GeneratedReport configuration
+        modelBuilder.Entity<GeneratedReport>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.ReportName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.FilePath).IsRequired().HasMaxLength(500);
+            entity.HasOne(e => e.ReportTemplate)
+                  .WithMany(t => t.GeneratedReports)
+                  .HasForeignKey(e => e.ReportTemplateId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.ReportSchedule)
+                  .WithMany()
+                  .HasForeignKey(e => e.ReportScheduleId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }
