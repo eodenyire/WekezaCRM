@@ -56,6 +56,18 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICaseRepository, CaseRepository>();
 builder.Services.AddScoped<IInteractionRepository, InteractionRepository>();
 
+// Phase 2 repositories
+builder.Services.AddScoped<INextBestActionRepository, NextBestActionRepository>();
+builder.Services.AddScoped<ISentimentAnalysisRepository, SentimentAnalysisRepository>();
+builder.Services.AddScoped<IWorkflowRepository, WorkflowRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+
+// Phase 3 repositories
+builder.Services.AddScoped<IWhatsAppRepository, WhatsAppRepository>();
+builder.Services.AddScoped<IUSSDRepository, USSDRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+
 // CORS
 builder.Services.AddCors(options =>
 {
@@ -83,3 +95,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Make the Program class public for integration testing
+public partial class Program { }
