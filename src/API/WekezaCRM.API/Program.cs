@@ -54,6 +54,7 @@ builder.Services.AddAuthorization();
 // Register repositories
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICaseRepository, CaseRepository>();
+builder.Services.AddScoped<IInteractionRepository, InteractionRepository>();
 
 // CORS
 builder.Services.AddCors(options =>
