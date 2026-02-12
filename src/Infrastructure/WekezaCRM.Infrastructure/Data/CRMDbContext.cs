@@ -32,6 +32,8 @@ public class CRMDbContext : DbContext
             entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
             entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.CreditScore).HasPrecision(18, 2);
+            entity.Property(e => e.LifetimeValue).HasPrecision(18, 2);
         });
 
         // Account configuration
