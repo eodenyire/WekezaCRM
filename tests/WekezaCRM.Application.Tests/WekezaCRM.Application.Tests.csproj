@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\WekezaCRM.Application\WekezaCRM.Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\WekezaCRM.Infrastructure\WekezaCRM.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
