@@ -56,6 +56,13 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICaseRepository, CaseRepository>();
 builder.Services.AddScoped<IInteractionRepository, InteractionRepository>();
 
+// Phase 2 repositories
+builder.Services.AddScoped<INextBestActionRepository, NextBestActionRepository>();
+builder.Services.AddScoped<ISentimentAnalysisRepository, SentimentAnalysisRepository>();
+builder.Services.AddScoped<IWorkflowRepository, WorkflowRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+
 // CORS
 builder.Services.AddCors(options =>
 {
